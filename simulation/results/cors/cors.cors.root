@@ -3,6 +3,6 @@ Num_Samples 9000
 Num_Predictors 10000
 Num_Samples_Used 9000
 Num_Predictors_Used 10000
-Num_Pairs 191430
+Num_Pairs 189590
 Threshold 7.3694e-04
 Window_kb 1000.0000
