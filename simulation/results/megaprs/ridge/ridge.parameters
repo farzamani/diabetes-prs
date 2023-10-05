@@ -1,0 +1,2 @@
+Model	Type	Heritability	Lasso_lambda	Lasso_s	Bolt_p	Bolt_f2	BayesR_p1	BayesR_p2	BayesR_p3	BayesR_p4	Elastic_p	Elastic_f2
+1	ridge	0.5008	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA

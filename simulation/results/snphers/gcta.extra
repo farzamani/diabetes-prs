@@ -1,0 +1,12 @@
+Weighted_Sample_Size 9000.00
+Num_Datapoints 10000
+Effective_Size 9972.36
+Weighted_Mean_Chisq 1.4508
+Weighted_GIF 1.0245
+Null_logl -10216.879166
+Alt_logl -9824.551366
+Converged YES
+Num_Neg_Exp_Her 0
+Effective_Neg_Exp_Her 0.00
+Num_Non_Pos_Stat 0
+Effective_Non_Pos_Stat 0.00
