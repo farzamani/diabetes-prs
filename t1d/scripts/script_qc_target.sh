@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --account farzamani
+#SBATCH --account dsmwpred
 #SBATCH -c 6
 #SBATCH --mem 4g
 
@@ -9,7 +9,7 @@ plink2 \
     --pfile data/geno_plink/chr6 \
     --rm-dup list \
     --write-snplist \
-    --out data/target/chr6
+    --out data/target/chr6.nodup
 
 plink2 \
     --pfile data/geno_plink/chr6 \
@@ -19,15 +19,15 @@ plink2 \
     --mind 0.01 \
     --write-snplist \
     --make-just-fam \
-    --exclude data/target/chr6.rmdup.mismatch \
-    --out data/target/chr6
+    --exclude data/target/chr6.nodup.rmdup.mismatch \
+    --out data/target/chr6.qc
 
 plink2 \
     --pfile data/geno_plink/chr6 \
-    --keep data/target/chr6.fam \
-    --extract data/target/chr6.snplist \
+    --keep data/target/chr6.qc.fam \
+    --extract data/target/chr6.qc.snplist \
     --indep-pairwise 200 50 0.25 \
-    --out data/target/chr6
+    --out data/target/chr6.qc
 
 plink2 \
     --pfile data/geno_plink/chr6 \

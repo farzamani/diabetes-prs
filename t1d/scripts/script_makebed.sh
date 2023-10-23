@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --account farzamani
+#SBATCH --account dsmwpred
 #SBATCH -c 6
 #SBATCH --mem 16g
 
