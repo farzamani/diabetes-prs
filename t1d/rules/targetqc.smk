@@ -60,9 +60,8 @@ rule targetqc_remove_highcorr:
     output:
         prune = "data/target/chr6.corr.prune.in"
     params:
-        window_size = 200,
-        step_size = 50,
-        r2 = 0.25,
+        window_size = "1000kb",
+        r2 = 0.5,
         out = "data/target/chr6.corr"
     threads:
         4
@@ -77,7 +76,7 @@ rule targetqc_remove_highcorr:
             --psam {input.psam} \
             --keep {input.fam} \
             --extract {input.snplist} \
-            --indep-pairwise {params.window_size} {params.step_size} {params.r2} \
+            --indep-pairwise {params.window_size} {params.r2} \
             --out {params.out}
         """
 
@@ -111,9 +110,9 @@ rule targetqc_heterozigosity_rate:
 
 rule targetqc_heterozigosity_rate_out:
     input:
-        rules.targetqc_heterozigosity_rate.output.het
+        het = rules.targetqc_heterozigosity_rate.output.het
     output:
-        "data/target/chr6.het.valid"
+        valid = "data/target/chr6.het.valid"
     threads:
         4
     resources:
@@ -124,14 +123,18 @@ rule targetqc_heterozigosity_rate_out:
 
 rule targetqc_check_sex:
     input:
-        pvar = "data/geno_plink/chr6.pvar",
-        pgen = "data/geno_plink/chr6.pgen",
-        psam = "data/geno_plink/chr6.psam",
+        pvar = "data/geno_plink/chrX.pvar",
+        pgen = "data/geno_plink/chrX.pgen",
+        psam = "data/geno_plink/chrX.psam",
         prune = rules.targetqc_remove_highcorr.output.prune
     output:
-        "data/target/chr6.sex.sexcheck"
+        sex = "data/target/chrX.sex.sexcheck",
+        bed = temp("data/temp/chrX.bed"),
+        bim = temp("data/temp/chrX.bim"),
+        fam = temp("data/temp/chrX.fam")
     params:
-        out = "data/target/chr6.sex"
+        out = "data/target/chrX.sex",
+        bfile = "data/temp/chrX"
     threads:
         4
     resources:
@@ -144,6 +147,13 @@ rule targetqc_check_sex:
             --pgen {input.pgen} \
             --psam {input.psam} \
             --extract {input.prune} \
+            --make-bed \
+            --out {params.bfile}
+
+        plink \
+            --bed {output.bed} \
+            --bim {output.bim} \
+            --fam {output.fam} \
             --check-sex \
             --out {params.out}
         """
@@ -153,7 +163,7 @@ rule targetqc_check_sex_out:
         het = rules.targetqc_heterozigosity_rate_out.output,
         sex = rules.targetqc_check_sex.output
     output:
-        "data/target/chr6.qc.valid"
+        valid = "data/target/chr6.qc.valid"
     threads:
         4
     resources:
@@ -168,7 +178,7 @@ rule targetqc_relatedness_check:
         pgen = "data/geno_plink/chr6.pgen",
         psam = "data/geno_plink/chr6.psam",
         prune = rules.targetqc_remove_highcorr.output.prune,
-        val = rules.targetqc_check_sex_out.output
+        val = rules.targetqc_heterozigosity_rate_out.output
     output:
         "data/target/chr6.rel.rel.id"
     params:
@@ -177,7 +187,7 @@ rule targetqc_relatedness_check:
     threads:
         4
     resources:
-        mem_mb = get_mem_mb,
+        mem_mb = get_mem_high,
         runtime = 720
     shell:
         """
@@ -186,8 +196,8 @@ rule targetqc_relatedness_check:
             --pgen {input.pgen} \
             --psam {input.psam} \
             --extract {input.prune} \
-            --keep (input.val) \
-            --rel-cutoff {params.cutoff} \
+            --keep {input.val} \
+            --king-cutoff {params.cutoff} \
             --out {params.out}
         """
 

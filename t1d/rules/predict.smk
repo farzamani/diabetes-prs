@@ -1,16 +1,25 @@
+
 rule predict_prs:
     input:
-        "results/megaprs/{model}/{model}.effects"
+        scorefile = "results/megaprs/{model}/{model}.effects",
+        bed = "data/bed/{chrom}.bed"
     output:
-        "results/megaprs/{model}/score"
+        cors = "results/megaprs/{model}/{chrom}/score.cors"
     params:
-        bfile = "data/bed/chr6",
-        power = 0
+        bfile = "data/bed/{chrom}",
+        power = 0,
+        phenofile = "data/t1d.pheno"
+    threads:
+        8
+    resources:
+        mem_mb = get_mem_high,
+        runtime = 720
     shell:
         """
         ./ldak --calc-scores results/megaprs/{wildcards.model}/score \
-            --scorefile {input} \
+            --scorefile {input.scorefile} \
             --bfile {params.bfile} \
-            --pheno data/t1d.pheno \
-            --power {params.power}
+            --pheno {params.phenofile} \
+            --power {params.power} \
+            --max-threads {threads}
         """

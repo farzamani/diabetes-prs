@@ -2,18 +2,34 @@ import os
 
 MODELS = ["lasso", "ridge", "bolt", "bayesr"]
 
+CHR = ["chr1", "chr2", "chr3", "chr4", "chr5",
+       "chr6", "chr7", "chr8", "chr9", "chr10",
+       "chr11", "chr12", "chr13", "chr14", "chr15",
+       "chr16", "chr17", "chr18", "chr19", "chr20",
+       "chr21", "chr22", "chrX", "chrXY",
+]
+
+CHR_sample = ["chr6"]
+
 def get_mem_mb(wildcards, attempt):
     return attempt * 16000
 
+def get_mem_high(wildcards, attempt):
+    return attempt * 48000
+
 rule all:
     input: 
-        "data/sumstats/snps.list",
-        "data/bed/chr6.bed",
-        "results/snphers/sumher.ind.hers",
-        expand("results/megaprs/{model}/{model}.effects", model=MODELS),
-        expand("results/megaprs/{model}/score.cors", model=MODELS)
+        # "data/sumstats/rsids.list", # base_qc
+        # expand("data/target/qc/{chrom}.corr.prune.in", chrom=CHR)
+        # "results/snphers/sumher.ind.hers",
+        expand("results/megaprs/{model}/{model}.effects", model=MODELS) # mega_prs
+        # expand("results/megaprs/{model}/{chrom}/score.cors", model=MODELS, chrom=CHR_sample), # predict_prs
+        # expand("data/geno_plink/{chrom}.bed", chrom=CHR) # make_bed
         
 include: "rules/baseqc.smk"
 include: "rules/targetqc.smk"
-include: "rules/sumtag.smk"
+include: "rules/sumtagcors.smk"
 include: "rules/megaprs.smk"
+
+include: "rules/makebed.smk"
+include: "rules/predict.smk"

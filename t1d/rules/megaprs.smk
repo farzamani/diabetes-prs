@@ -2,16 +2,18 @@ rule mega_prs:
     input:
         sumstats = "data/sumstats/sumstats.txt",
         indhers = "results/snphers/sumher.ind.hers",
-        snplist = rules.baseqc_summary.output
+        snplist = "data/snps/snps.valid",
+        cors = "results/cors/cors.cors.bim"
     output:
         "results/megaprs/{model}/{model}.effects"
     params:
         cors = "results/cors/cors",
-        cv = 0.1
+        cv = 0.1,
+        window_kb = 1000
     threads:
         8
     resources:
-        mem_mb = 32000,
+        mem_mb = get_mem_high,
         runtime = 720
     shell:
         """
@@ -22,25 +24,7 @@ rule mega_prs:
             --cors {params.cors} \
             --check-high-LD NO \
             --cv-proportion {params.cv} \
-            --window-kb 1000 \
-            --allow-ambiguous YES \
+            --window-kb {params.window_kb} \
             --extract {input.snplist} \
             --max-threads {threads}
-        """
-
-rule predict_prs:
-    input:
-        "results/megaprs/{model}/{model}.effects"
-    output:
-        "results/megaprs/{model}/score.cors"
-    params:
-        bfile = "data/bed/chr6",
-        power = 0
-    shell:
-        """
-        ./ldak --calc-scores results/megaprs/{wildcards.model}/score \
-            --scorefile {input} \
-            --bfile {params.bfile} \
-            --pheno data/t1d.pheno \
-            --power {params.power}
         """
