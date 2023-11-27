@@ -1,14 +1,36 @@
+rule high_ld:
+    input:
+        highld = "data/highld/highld.txt"
+    output:
+        highld = "results/highld/genes.predictors.used"
+    params:
+        bfile = "data/reference/1000G.404EUR",
+        outdir = "results/highld"
+    threads:
+        1
+    resources:
+        mem_mb = get_mem_mb,
+        runtime = 720
+    shell:
+        """
+        ./ldak --cut-genes {params.outdir} \
+            --bfile {params.bfile} \
+            --genefile {input.highld}
+        """
+
 rule mega_prs:
     input:
         sumstats = "data/sumstats/sumstats.txt",
         indhers = "results/snphers/sumher.ind.hers",
-        snplist = "data/snps/snps.valid",
-        cors = "results/cors/cors.cors.bim"
+        snplist = rules.valid_snps.output.valid,
+        cors = "results/cors/cors.cors.bim",
+        highld = rules.high_ld.output.highld,
+        pheno = "data/t1d.pheno"
     output:
         "results/megaprs/{model}/{model}.effects"
     params:
         cors = "results/cors/cors",
-        cv = 0.1,
+        cv = 0.2,
         window_kb = 1000
     threads:
         8
@@ -22,9 +44,10 @@ rule mega_prs:
             --summary {input.sumstats} \
             --ind-hers {input.indhers} \
             --cors {params.cors} \
-            --check-high-LD NO \
+            --high-LD {input.highld} \
             --cv-proportion {params.cv} \
             --window-kb {params.window_kb} \
             --extract {input.snplist} \
-            --max-threads {threads}
+            --max-threads {threads} \
+            --pheno {input.pheno}
         """

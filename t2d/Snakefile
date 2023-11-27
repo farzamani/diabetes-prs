@@ -20,15 +20,18 @@ def get_mem_high(wildcards, attempt):
 rule all:
     input: 
         # "data/sumstats/rsids.list", # base_qc
+        # expand("data/targetqc/{chrom}/{chrom}.qc.snplist", chrom=CHR_sample),
         # expand("data/target/qc/{chrom}.corr.prune.in", chrom=CHR)
         # "results/snphers/sumher.ind.hers",
-        expand("results/megaprs/{model}/{model}.effects", model=MODELS) # mega_prs
-        # expand("results/megaprs/{model}/{chrom}/score.cors", model=MODELS, chrom=CHR_sample), # predict_prs
-        # expand("data/geno_plink/{chrom}.bed", chrom=CHR) # make_bed
+        # expand("results/megaprs/{model}/{model}.effects", model=MODELS), # mega_prs
+        expand("results/megaprs/{model}/score.cors", model=MODELS), # predict_prs
+        # expand("data/bed/{chrom}.bed", chrom=CHR_sample) # make_bed
         
 include: "rules/baseqc.smk"
-include: "rules/targetqc.smk"
-include: "rules/sumtagcors.smk"
+include: "rules/calc_cors.smk"
+include: "rules/extract_snps.smk"
+
+include: "rules/calc_taghers.smk"
 include: "rules/megaprs.smk"
 
 include: "rules/makebed.smk"

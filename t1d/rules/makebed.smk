@@ -20,11 +20,11 @@ rule make_bfile:
         psam = "data/geno_plink/{chrom}.psam",
         dup = "data/target/qc/{chrom}.dup.snplist"
     output:
-        bed = "data/geno_plink/{chrom}.bed",
-        bim = "data/geno_plink/{chrom}.bim",
-        fam = "data/geno_plink/{chrom}.fam",
+        bed = "data/bed/{chrom}.bed",
+        bim = "data/bed/{chrom}.bim",
+        fam = "data/bed/{chrom}.fam",
     params:
-        bfile = "data/geno_plink/{chrom}"
+        bfile = "data/bed/{chrom}"
     threads:
         8
     resources:

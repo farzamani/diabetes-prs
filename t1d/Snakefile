@@ -12,23 +12,26 @@ CHR = ["chr1", "chr2", "chr3", "chr4", "chr5",
 CHR_sample = ["chr6"]
 
 def get_mem_mb(wildcards, attempt):
-    return attempt * 16000
+    return attempt * 32000
 
 def get_mem_high(wildcards, attempt):
-    return attempt * 48000
+    return attempt * 64000
 
 rule all:
     input: 
         # "data/sumstats/rsids.list", # base_qc
         # expand("data/target/qc/{chrom}.corr.prune.in", chrom=CHR)
         # "results/snphers/sumher.ind.hers",
-        expand("results/megaprs/{model}/{model}.effects", model=MODELS) # mega_prs
-        # expand("results/megaprs/{model}/{chrom}/score.cors", model=MODELS, chrom=CHR_sample), # predict_prs
+        # expand("results/megaprs/{model}/{model}.effects", model=MODELS) # mega_prs
+        expand("results/megaprs/{model}/score.cors", model=MODELS), # predict_prs
         # expand("data/geno_plink/{chrom}.bed", chrom=CHR) # make_bed
+        # "results/snps/snps.valid"
         
 include: "rules/baseqc.smk"
-include: "rules/targetqc.smk"
-include: "rules/sumtagcors.smk"
+include: "rules/calc_cors.smk"
+include: "rules/extract_snps.smk"
+
+include: "rules/calc_taghers.smk"
 include: "rules/megaprs.smk"
 
 include: "rules/makebed.smk"

@@ -1,0 +1,12 @@
+PLINK v2.00a5LM 64-bit Intel (23 Sep 2023)
+Options in effect:
+  --make-bed
+
+Hostname: fe-open-01
+Working directory: /faststorage/project/dsmwpred/farhad/PRS/t1d
+Start time: Fri Nov 24 01:20:36 2023
+
+Error: No input dataset.
+For more info, try "plink2 --help <flag name>" or "plink2 --help | more".
+
+End time: Fri Nov 24 01:20:36 2023

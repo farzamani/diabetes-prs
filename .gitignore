@@ -1,0 +1,17 @@
+t1d/data
+t1d/results
+t1d/.snakemake
+t1d/.RData
+t1d/.Rhistory
+
+t2d/data
+t2d/results
+t2d/.snakemake
+t2d/.RData
+t2d/.Rhistory
+
+reference
+liftover
+phenotype_data/icd.txt
+phenotype_data/t1d.pheno
+phenotype_data/t2d.pheno

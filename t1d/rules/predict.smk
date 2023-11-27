@@ -2,11 +2,11 @@
 rule predict_prs:
     input:
         scorefile = "results/megaprs/{model}/{model}.effects",
-        bed = "data/bed/{chrom}.bed"
+        snplist = rules.valid_snps.output.valid
     output:
-        cors = "results/megaprs/{model}/{chrom}/score.cors"
+        cors = "results/megaprs/{model}/score.cors"
     params:
-        bfile = "data/bed/{chrom}",
+        bfile = "data/target/geno2",
         power = 0,
         phenofile = "data/t1d.pheno"
     threads:
@@ -21,5 +21,6 @@ rule predict_prs:
             --bfile {params.bfile} \
             --pheno {params.phenofile} \
             --power {params.power} \
-            --max-threads {threads}
+            --max-threads {threads} \
+            --extract {input.snplist}
         """
