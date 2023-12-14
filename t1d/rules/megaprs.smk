@@ -24,13 +24,12 @@ rule mega_prs:
         indhers = "results/snphers/sumher.ind.hers",
         snplist = rules.valid_snps.output.valid,
         cors = "results/cors/cors.cors.bim",
-        highld = rules.high_ld.output.highld,
-        pheno = "data/t1d.pheno"
+        highld = rules.high_ld.output.highld
     output:
         "results/megaprs/{model}/{model}.effects"
     params:
         cors = "results/cors/cors",
-        cv = 0.2,
+        cv = 0.1,
         window_kb = 1000
     threads:
         8
@@ -47,7 +46,6 @@ rule mega_prs:
             --high-LD {input.highld} \
             --cv-proportion {params.cv} \
             --window-kb {params.window_kb} \
-            --extract {input.snplist} \
-            --max-threads {threads} \
-            --pheno {input.pheno}
+            --allow-ambiguous YES \
+            --max-threads {threads}
         """

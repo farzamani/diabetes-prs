@@ -23,16 +23,14 @@ rule all:
         # expand("data/target/qc/{chrom}.corr.prune.in", chrom=CHR)
         # "results/snphers/sumher.ind.hers",
         # expand("results/megaprs/{model}/{model}.effects", model=MODELS) # mega_prs
-        expand("results/megaprs/{model}/score.cors", model=MODELS), # predict_prs
+        # expand("results/megaprs/{model}/score.cors", model=MODELS), # predict_prs
+        expand("results/megaprs/{model}/jackknife.jack", model=MODELS), # jackknife
         # expand("data/geno_plink/{chrom}.bed", chrom=CHR) # make_bed
         # "results/snps/snps.valid"
         
 include: "rules/baseqc.smk"
-include: "rules/calc_cors.smk"
 include: "rules/extract_snps.smk"
-
+include: "rules/calc_cors.smk"
 include: "rules/calc_taghers.smk"
 include: "rules/megaprs.smk"
-
-include: "rules/makebed.smk"
 include: "rules/predict.smk"

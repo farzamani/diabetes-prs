@@ -13,7 +13,7 @@ sorted_merged <- sorted_merged %>% na.omit()
 
 print("Formatting data...")
 sorted_merged$V1 <- sub("chr", "", sorted_merged$V1)
-sorted_merged$n <- 348788
+sorted_merged$n <- 310131 + 38657
 sorted_merged$maf <- pmin(sorted_merged$af_alt, 1 - sorted_merged$af_alt)
 sorted_merged$pred <- paste(sorted_merged$V1, ":", sorted_merged$V2, sep="")
 sorted_merged$Z <- sorted_merged$beta / sorted_merged$sebeta

@@ -18,11 +18,11 @@ rule calc_tagging:
         """
         ./ldak --calc-tagging {params.tag_out} \
             --bfile {params.bfile} \
-            --ignore-weights YES \
             --save-matrix YES \
             --power {params.power} \
             --window-kb {params.window_kb} \
             --extract {input.snplist} \
+            --ignore-weights YES \
             --max-threads {threads}
         """
 
@@ -35,10 +35,7 @@ rule calc_sumher:
     output:
         indhers = "results/snphers/sumher.ind.hers"
     params:
-        sumher_out = "results/snphers/sumher",
-        power = -1,
-        window_kb = 1000,
-        cutoff = 0.01 # remove predictors that explain more than 1% of phenotypic variance
+        sumher_out = "results/snphers/sumher"
     threads:
         8
     resources:
@@ -51,7 +48,6 @@ rule calc_sumher:
             --summary {input.sumstats} \
             --matrix {input.matrix} \
             --extract {input.snplist} \
-            --cutoff {params.cutoff} \
             --max-threads {threads} \
             --check-sums NO
         """

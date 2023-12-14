@@ -57,3 +57,5 @@ plink2 \
 #     --keep {input.rel} \
 #     --extract {input.snplist} \
 #     --out {params.out}
+
+./ldak --jackknife results/megaprs/bayesr/jackknife --profile results/megaprs/bayesr/score.profile --num-blocks 200 --AUC YES

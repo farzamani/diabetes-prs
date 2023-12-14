@@ -1,6 +1,6 @@
 rule calc_cors:
     input:
-        snplist = rules.baseqc_summary.output.snps
+        snplist = rules.valid_snps.output.valid
     output:
         cors = "results/cors/cors.cors.bim"
     params:
