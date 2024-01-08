@@ -8,3 +8,4 @@ mkdir linreg
 ./ldak --linear linreg/linreg \
     --bfile data/train/samples \
     --pheno data/samples.pheno \
+    --prevalence 0.1

@@ -19,6 +19,9 @@ names(linreg) <- c("chr",
                    "a1_mean",
                    "maf")
 
+linreg$chr <- as.numeric(linreg$chr)
+linreg$pos <- as.numeric(linreg$pos)
+
 linreg <- linreg %>% 
   select("chr",
          "rsids",
@@ -31,6 +34,7 @@ linreg <- linreg %>%
          "a1_mean",
          "maf") %>% 
   filter(maf > 0.01) %>% 
+  filter(p > 0) %>%
   distinct(rsids, .keep_all = TRUE) %>% 
   filter(  !(a1 == "A" & a2 == "T")& 
            !(a1 == "T" & a2 == "A")&

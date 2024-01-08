@@ -1,4 +1,0 @@
-Can skip training phase because there is only set of parameters
-Constructing 1 models using summary statistics in linreg/linreg.summaries
-Model	Type	Heritability	lambda	s	p	f2	p1	p2	p3	p4	Num_Predictors_Failed
-1	ridge	0.5208	NA	NA	NA	NA	NA	NA	NA	NA	0

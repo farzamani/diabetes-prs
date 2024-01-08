@@ -5,9 +5,10 @@ num_samples=10000
 # Simulate phenotype
 power=-1
 #power=-0.25
-heritability=0.5
+heritability=0.8
 num_pheno=1
-causal_snps=100
+causal_snps=200
+prevalence=0.1
 
 rm -rf data
 mkdir data
@@ -23,7 +24,8 @@ mkdir data
     --power $power \
     --her $heritability \
     --num-phenos $num_pheno \
-    --num-causals $causal_snps
+    --num-causals $causal_snps \
+    --prevalence $prevalence
 
 # Split dataset
 val=0.1

@@ -23,6 +23,12 @@ for model in "${models[@]}"; do
         --bfile data/validation/samples \
         --pheno data/samples.pheno \
         --power 0
+    
+    ./ldak --jackknife results/megaprs/$model/jackknife \
+            --profile results/megaprs/$model/score.profile \
+            --num-blocks 200 \
+            --AUC YES \
+            --prevalence 0.1
 
 done
 
