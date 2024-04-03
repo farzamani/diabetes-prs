@@ -8,7 +8,7 @@ rule calc_cors:
         cors_out = "results/cors/cors",
         window_kb = 3000
     threads:
-        8
+        16
     resources:
         mem_mb = get_mem_high,
         runtime = 720

@@ -5,7 +5,7 @@ Quality Control for Base Data (Reference Panel)
 3. Removes ambiguous SNPs
 
 Summary Statistics Format:
-    "Predictor", "A1", "A2", "rsids", "Z", "Direction", "P", "maf", "n"
+    "Predictor", "A1", "A2", "rsids", "Direction", "P", "maf", "n"
 """
 
 rule baseqc_remove_duplicate:
@@ -44,7 +44,7 @@ rule baseqc_remove_low_maf:
         # Removing low MAF
         echo "Removing low MAF..."
         cat {input.sumstats} | \
-            awk 'NR==1 || ($8 > {params.maf}) {{print}}' > {output.sumstats}
+            awk 'NR==1 || ($7 > {params.maf}) {{print}}' > {output.sumstats}
         echo "Removing low MAF... Done"
         """
 

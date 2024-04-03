@@ -1,11 +1,11 @@
 # Simulate data
 num_snps=10000
-num_samples=10000
+num_samples=150000
 
 # Simulate phenotype
 power=-1
 #power=-0.25
-heritability=0.8
+heritability=0.5
 num_pheno=1
 causal_snps=200
 prevalence=0.1

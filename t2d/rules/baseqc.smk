@@ -44,7 +44,7 @@ rule baseqc_remove_low_maf:
         # Removing low MAF
         echo "Removing low MAF..."
         cat {input.sumstats} | \
-            awk 'NR==1 || ($8 > {params.maf}) {{print}}' > {output.sumstats}
+            awk 'NR==1 || ($7 > {params.maf}) {{print}}' > {output.sumstats}
         echo "Removing low MAF... Done"
         """
 

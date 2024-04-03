@@ -1,26 +1,26 @@
-library(ggplot2)
 library(dplyr)
 library(qqman)
 library(data.table)
 
-linreg <- fread(input = file.path(getwd(), "linreg", "linreg.assoc"), data.table = FALSE, index = FALSE)
+linreg <- fread(input = file.path(getwd(), "sumstats.t1d.txt"), data.table = FALSE, index = FALSE)
 
-names(linreg) <- c("chr",
-                   "rsids",
-                   "pos",
-                   "a1",
-                   "a2",
-                   "Wald_Stat",
-                   "p",
-                   "b",
-                   "seb",
-                   "Effect_Liability",
-                   "SD_Liability",
-                   "a1_mean",
-                   "maf")
+split_data <- strsplit(linreg$Predictor, ":")
+linreg$chr <- sapply(split_data, function(x) x[1])
+linreg$pos <- sapply(split_data, function(x) x[2])
 
 linreg$chr <- as.numeric(linreg$chr)
 linreg$pos <- as.numeric(linreg$pos)
+
+names(linreg) <- c("Predictor",
+                   "a1",
+                   "a2",
+                   "rsids",
+                   "b",
+                   "p",
+                   "maf",
+                   "n",
+                   "chr",
+                   "pos")
 
 linreg <- linreg %>% 
   select("chr",
@@ -30,8 +30,6 @@ linreg <- linreg %>%
          "a2",
          "p",
          "b",
-         "seb",
-         "a1_mean",
          "maf") %>% 
   filter(maf > 0.01) %>% 
   filter(p > 0) %>%
@@ -42,7 +40,8 @@ linreg <- linreg %>%
            !(a1 == "G" & a2 == "C"))
 
 # Open a PNG graphics device for saving the plot
-png("figures/manhattan.png", width = 8, height = 5, units = "in", res = 300)
+png("figures/t1d_manhattan.png", width = 8, height = 5, units = "in", res = 300)
+# svg("figures/t1d_manhattan.svg", width = 8, height = 5)
 
 manhattan(linreg,
         chr = "chr",
@@ -50,8 +49,10 @@ manhattan(linreg,
         p = "p",
         snp = "rsids",
         annotatePval = 5e-8,
+        ylim = c(0, 40),
         main = "Manhattan Plot", 
         col = c("blue4", "orange3"))
+
 
 # Save the current plot
 print("Saving figure")

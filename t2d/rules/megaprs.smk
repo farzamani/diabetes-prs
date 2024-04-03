@@ -47,5 +47,6 @@ rule mega_prs:
             --cv-proportion {params.cv} \
             --window-kb {params.window_kb} \
             --allow-ambiguous YES \
-            --max-threads {threads}
+            --max-threads {threads} \
+            --extract {input.snplist}
         """

@@ -8,14 +8,24 @@ rule calc_tagging:
         bfile = "data/reference/1000G.404EUR",
         tag_out = "results/tagging/1000G.404EUR",
         power = -1,
-        window_kb = 1000
+        window_kb = 1000,
+        weightsfile = "results/weights/weights.short"
     threads:
-        8
+        16
     resources:
         mem_mb = get_mem_high,
         runtime = 720
     shell:
         """
+        # ./ldak --calc-tagging {params.tag_out} \
+        #     --bfile {params.bfile} \
+        #     --save-matrix YES \
+        #     --power {params.power} \
+        #     --window-kb {params.window_kb} \
+        #     --extract {input.snplist} \
+        #     --weights {params.weightsfile} \
+        #     --max-threads {threads}
+        
         ./ldak --calc-tagging {params.tag_out} \
             --bfile {params.bfile} \
             --save-matrix YES \
@@ -37,7 +47,7 @@ rule calc_sumher:
     params:
         sumher_out = "results/snphers/sumher"
     threads:
-        8
+        16
     resources:
         mem_mb = get_mem_high,
         runtime = 720

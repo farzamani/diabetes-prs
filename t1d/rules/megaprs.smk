@@ -7,7 +7,7 @@ rule high_ld:
         bfile = "data/reference/1000G.404EUR",
         outdir = "results/highld"
     threads:
-        1
+        8
     resources:
         mem_mb = get_mem_mb,
         runtime = 720
@@ -32,7 +32,7 @@ rule mega_prs:
         cv = 0.1,
         window_kb = 1000
     threads:
-        8
+        16
     resources:
         mem_mb = get_mem_high,
         runtime = 720
@@ -47,5 +47,6 @@ rule mega_prs:
             --cv-proportion {params.cv} \
             --window-kb {params.window_kb} \
             --allow-ambiguous YES \
-            --max-threads {threads}
+            --max-threads {threads} \
+            --extract {input.snplist}
         """

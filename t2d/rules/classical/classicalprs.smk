@@ -28,7 +28,7 @@ rule classical_prs_just:
         results = "results/classical/results.txt"
     params:
         bfile = "data/target/geno2",
-        pheno = "data/t1d.pheno",
+        pheno = "data/t2d.pheno",
         snplist = "results/snps/snps.valid"
     threads:
         16

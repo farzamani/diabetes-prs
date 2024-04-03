@@ -1,23 +1,22 @@
-
-rule predict_prs:
+rule predict_prs_compare:
     input:
         scorefile = "results/megaprs/{model}/{model}.effects",
         snplist = rules.valid_snps.output.valid
     output:
-        cors = "results/megaprs/{model}/score.cors",
-        profile = "results/megaprs/{model}/score.profile"
+        cors = "results/compare/{model}/score.cors",
+        profile = "results/compare/{model}/score.profile"
     params:
         bfile = "data/target/geno2",
         power = 0,
-        phenofile = "data/t2d.pheno"
+        phenofile = "data/t1d.pheno"
     threads:
-        8
+        16
     resources:
         mem_mb = get_mem_high,
         runtime = 720
     shell:
         """
-        ./ldak --calc-scores results/megaprs/{wildcards.model}/score \
+        ./ldak --calc-scores results/compare/{wildcards.model}/score \
             --scorefile {input.scorefile} \
             --bfile {params.bfile} \
             --pheno {params.phenofile} \
@@ -25,22 +24,22 @@ rule predict_prs:
             --max-threads {threads}
         """
 
-rule jackknife:
+rule jackknife_compare:
     input:
-        profile = rules.predict_prs.output.profile
+        profile = rules.predict_prs_compare.output.profile
     output:
-        jackknife = "results/megaprs/{model}/jackknife.jack"
+        jackknife = "results/compare/{model}/jackknife.jack"
     params:
-        prevalence = 0.1025
+        prevalence = 0.0238
     threads:
-        4
+        8
     resources:
         mem_mb = get_mem_high,
         runtime = 720
     shell:
         """
-        ./ldak --jackknife results/megaprs/{wildcards.model}/jackknife \
-            --profile results/megaprs/{wildcards.model}/score.profile \
+        ./ldak --jackknife results/compare/{wildcards.model}/jackknife \
+            --profile results/compare/{wildcards.model}/score.profile \
             --num-blocks 200 \
             --AUC YES \
             --prevalence {params.prevalence}
